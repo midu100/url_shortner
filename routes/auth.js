@@ -1,9 +1,9 @@
 const express= require('express')
+const { SignUp, Login } = require('../controllers/authController')
 const route = express.Router()
 
-route.get('/signup',(req,res)=>{
-    res.status(201).send({message : 'Registration complete.'})
-})
+route.post('/signup',SignUp)
+route.post('/login',Login)
 
 
 module.exports = route
