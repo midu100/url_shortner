@@ -46,9 +46,9 @@ const Login = async (req,res)=>{
         const userData = await UserScema.findOne({email})
         if(!userData) return res.status(400).send({message : 'User not found.'})
 
-        // const matchPassword = await userData.comparePassword(password)
-        // if(!matchPassword) return console.log('incorrect')
-        if(userData.password != password) return res.status(400).send({message : 'incorrect password.'})
+        const matchPassword = await userData.comparePassword(password)
+        if(!matchPassword) return res.status(400).send({message : 'incorrect password.'})
+        
         // success
         res.status(200).send({message : 'Login Successful'})
 
