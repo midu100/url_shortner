@@ -12,4 +12,12 @@ const isValidPass = (password)=>{
 }
 
 
-module.exports = {isValidEmail,isValidPass}
+const isValidUrl = (urlLong)=>{
+   const urlRegex = /^(https?):\/\/((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})|localhost|(\d{1,3}\.){3}\d{1,3}|\[?[A-F0-9:]+\]?)(:\d{1,5})?(\/[^\s]*)?$/i;
+
+
+   return urlRegex.test(urlLong)
+}
+
+
+module.exports = {isValidEmail,isValidPass,isValidUrl}

@@ -1,9 +1,8 @@
 const express= require('express')
+const { createShortUrl } = require('../controllers/shortnerController')
 const route = express.Router()
 
-route.post('/shorturl',(req,res)=>{
-    res.status(201).send({message : 'Registration complete.'})
-})
+route.post('/create',createShortUrl)
 
 
 module.exports = route
