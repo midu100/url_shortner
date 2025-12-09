@@ -2,6 +2,7 @@ const express = require('express')
 const route = express.Router()
 const authRoute = require('./auth')
 const shortnerRoute = require('./shortnerurl')
+const { redirectUrl } = require('../controllers/shortnerController')
 
 
 route.get('/',(req,res)=>{
@@ -11,6 +12,9 @@ route.get('/',(req,res)=>{
 // authentication route
 route.use('/auth',authRoute)
 route.use('/url',shortnerRoute)
+
+// redirectUrl
+route.get('/:id',redirectUrl)
 
 
 

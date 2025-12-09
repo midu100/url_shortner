@@ -1,5 +1,6 @@
 const { isValidUrl } = require("../utils/regexValidation")
 const generateRandomStr = require('../utils/generateRandomStr')
+const shortnerSchema = require("../models/shortnerSchema")
 
 // const generateRandomStr = (length)=>{
 //     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789'
@@ -23,6 +24,20 @@ const createShortUrl = async (req,res)=>{
 
         urlShort = generateRandomStr()
 
+        // send to Database
+        const urlData = new shortnerSchema({
+            urlLong,
+            urlShort
+        })
+        urlData.save()
+
+
+        // success
+        res.status(201).send({
+            longUrl : urlData.urlLong,
+            shortUrl : urlData.urlShort
+        })
+
 
 
     } 
@@ -33,4 +48,27 @@ const createShortUrl = async (req,res)=>{
 }
 
 
-module.exports = {createShortUrl}
+// ========= Redirect Link ================
+
+const redirectUrl = async (req,res)=>{
+    try {
+        
+        const params = req.params
+        if(!params.id) return res.status(400).send({message : 'Invalid address'})
+
+        const urlData = await shortnerSchema.findOne({urlShort : params.id})
+        if(!urlData) return res.status(404).send({message : '404 - Not Found'})
+
+        // redirect
+        res.redirect(urlData.urlLong)
+
+
+    } 
+    
+    catch (error) {
+      console.log(error)    
+    }
+}
+
+
+module.exports = {createShortUrl,redirectUrl}
