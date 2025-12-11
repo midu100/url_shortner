@@ -19,6 +19,10 @@ const createShortUrl = async (req,res)=>{
         
         const {urlLong} = req.body
 
+        const token = req.cookie
+        console.log(token)
+       
+
         if(!urlLong) return res.status(400).send({message : 'Enter url please'})
         if(!isValidUrl(urlLong)) return res.status(400).send({message : 'Invalid Url'})
 

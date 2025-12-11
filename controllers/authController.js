@@ -1,5 +1,7 @@
 const UserScema = require("../models/UserScema")
 const { isValidEmail, isValidPass } = require("../utils/regexValidation")
+const jwt = require('jsonwebtoken');
+const { generateAccToken } = require("../utils/tokens");
 
 
 const SignUp =async (req,res)=>{
@@ -49,8 +51,13 @@ const Login = async (req,res)=>{
         const matchPassword = await userData.comparePassword(password)
         if(!matchPassword) return res.status(400).send({message : 'incorrect password.'})
         
+        const token = generateAccToken({id : userData._id , email : userData.email})
+        console.log(token)
+        res.cookie('acc_token',token)
+          
+
         // success
-        res.status(200).send({message : 'Login Successful'})
+        res.status(200).send({message : 'Login Successful',acc_token : token})
 
 
     } 
