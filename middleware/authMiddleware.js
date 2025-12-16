@@ -1,12 +1,10 @@
 const { decode } = require("jsonwebtoken")
 const { isVerifyToken } = require("../utils/tokens")
 
-const authMiddleware = (req,res,next)=>{
+const isAuthenticMiddle = (req,res,next)=>{
     try {
         
-        const token = req.headers.acc_token
-        
-       
+        const token = req.cookies.acc_token
         const decoded = isVerifyToken(token)
         req.user = decoded
         
@@ -15,9 +13,23 @@ const authMiddleware = (req,res,next)=>{
     } 
     
     catch (error) {
-       console.log(error)     
+       next()   
+    }
+}
+
+const authMiddleware = (req,res,next)=>{
+    try {
+        const token = req.cookies.acc_token
+        const decoded = isVerifyToken(token)
+        if(!decoded) return res.status(400).send({message : 'Unauthorized Request'})
+        req.user = decoded
+
+        next()
+    } 
+    catch (error) {
+        console.log(error)
     }
 }
 
 
-module.exports = authMiddleware
+module.exports = {isAuthenticMiddle,authMiddleware}

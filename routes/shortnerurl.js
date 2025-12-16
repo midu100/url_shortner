@@ -1,9 +1,10 @@
 const express= require('express')
-const { createShortUrl } = require('../controllers/shortnerController')
-const authMiddleware = require('../middleware/authMiddleware')
+const { createShortUrl, getShortUrls } = require('../controllers/shortnerController')
+const {isAuthenticMiddle,authMiddleware} = require('../middleware/authMiddleware')
 const route = express.Router()
 
-route.post('/create',authMiddleware, createShortUrl)
+route.post('/create',isAuthenticMiddle, createShortUrl)
+route.get('/geturls',authMiddleware,getShortUrls)
 
 
 module.exports = route

@@ -68,5 +68,20 @@ const Login = async (req,res)=>{
 }
 
 
+// ============= Get Profile =========================
+const getProfile = async (req,res)=>{
+  try {
+    const user = req.user
+
+    const userData = await UserScema.findById(user.id)
+
+    res.status(200).send({message : 'userData',userData})
+  } 
+  catch (error) {
+     console.log(error)  
+  }
+}
+
+
 
 module.exports = {SignUp,Login}

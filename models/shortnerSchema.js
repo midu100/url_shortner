@@ -6,7 +6,7 @@ const shortnerSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "myUser" },
   visitHistory: [
     {
-      visitTime: { type: Date, default: Date.now() },
+      visitTime: { type: Date },
     },
   ],
 });

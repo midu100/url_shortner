@@ -18,6 +18,8 @@ const createShortUrl = async (req,res)=>{
     try {
         
         const {urlLong} = req.body
+
+        // console.log('user',req.user)
        
 
         if(!urlLong) return res.status(400).send({message : 'Enter url please'})
@@ -28,7 +30,9 @@ const createShortUrl = async (req,res)=>{
         // send to Database
         const urlData = new shortnerSchema({
             urlLong,
-            urlShort
+            urlShort,
+            user : req.user.id
+            
         })
         urlData.save()
 
@@ -55,10 +59,18 @@ const redirectUrl = async (req,res)=>{
     try {
         
         const params = req.params
+        
         if(!params.id) return res.status(400).send({message : 'Invalid address'})
 
         const urlData = await shortnerSchema.findOne({urlShort : params.id})
+        // console.log('urlData',urlData)
         if(!urlData) return res.status(404).send({message : '404 - Not Found'})
+
+        // urlData er moddhe user ache kina / login user ache kina check korbe
+        if(urlData.user){
+            urlData.visitHistory.push({'visitTime': Date.now()})
+            urlData.save()
+        }
 
         // redirect
         res.redirect(urlData.urlLong)
@@ -72,4 +84,26 @@ const redirectUrl = async (req,res)=>{
 }
 
 
-module.exports = {createShortUrl,redirectUrl}
+// =====get all url / login kora thakle user er banano sokol link dekhte parbe
+const getShortUrls = async(req,res)=>{
+    try {
+        
+        const user = req.user
+        // console.log('user',user)
+
+        const urlHistory = await shortnerSchema.find({user : user.id}).select('-user')
+        console.log('histry',urlHistory)
+
+        res.status(200).send(urlHistory)
+
+
+    } 
+    
+    catch (error) {
+       console.log(error) 
+       res.send(error)   
+    }
+}
+
+
+module.exports = {createShortUrl,redirectUrl,getShortUrls}
