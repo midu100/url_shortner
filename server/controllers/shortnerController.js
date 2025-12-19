@@ -31,7 +31,7 @@ const createShortUrl = async (req,res)=>{
         const urlData = new shortnerSchema({
             urlLong,
             urlShort,
-            user : req.user.id
+            user : req.user?.id
             
         })
         urlData.save()
@@ -90,9 +90,7 @@ const getShortUrls = async(req,res)=>{
         
         const user = req.user
         // console.log('user',user)
-
         const urlHistory = await shortnerSchema.find({user : user.id}).select('-user')
-        console.log('histry',urlHistory)
 
         res.status(200).send(urlHistory)
 

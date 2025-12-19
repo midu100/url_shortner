@@ -84,4 +84,4 @@ const getProfile = async (req,res)=>{
 
 
 
-module.exports = {SignUp,Login}
+module.exports = {SignUp,Login,getProfile}
