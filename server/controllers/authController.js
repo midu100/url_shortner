@@ -53,7 +53,10 @@ const Login = async (req,res)=>{
         
         const token = generateAccToken({id : userData._id , email : userData.email})
         console.log(token)
-        res.cookie('acc_token',token)
+        res.cookie('acc_token',token,{
+        httpOnly: false, // Recommended for security
+        secure: false,  // Set to false for localhost (HTTP), true for production (HTTPS)
+  })
           
 
         // success
