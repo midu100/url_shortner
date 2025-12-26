@@ -52,11 +52,13 @@ const Login = async (req,res)=>{
         if(!matchPassword) return res.status(400).send({message : 'incorrect password.'})
         
         const token = generateAccToken({id : userData._id , email : userData.email})
-        console.log(token)
+        // console.log(token)
+
         res.cookie('acc_token',token,{
-        httpOnly: false, // Recommended for security
-        secure: false,  // Set to false for localhost (HTTP), true for production (HTTPS)
-  })
+        httpOnly: false,
+        secure: false,
+        }
+)
           
 
         // success
@@ -75,9 +77,8 @@ const Login = async (req,res)=>{
 const getProfile = async (req,res)=>{
   try {
     const user = req.user
-
-    const userData = await UserScema.findById(user.id)
-
+    const userData = await UserScema.findById(user.id).select('-password')
+    // console.log(userData) 
     res.status(200).send({message : 'userData',userData})
   } 
   catch (error) {

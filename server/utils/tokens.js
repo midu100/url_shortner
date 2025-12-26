@@ -8,6 +8,7 @@ const generateAccToken = (paylod)=>{
 
 
 const isVerifyToken = (token)=>{
+    console.log(token)
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded
 }
